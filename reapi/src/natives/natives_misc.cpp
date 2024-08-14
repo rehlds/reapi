@@ -3345,6 +3345,122 @@ cell AMX_NATIVE_CALL rg_send_death_message(AMX *amx, cell *params)
 	return TRUE;
 }
 
+cell AMX_NATIVE_CALL rg_player_traceattack(AMX* amx, cell* params)
+{
+	enum args_e { arg_count, arg_index, arg_attacker, arg_damage, arg_dir, arg_trace, arg_dmg_type };
+
+	CHECK_ISPLAYER(arg_index);
+	CHECK_ISENTITY(arg_attacker);
+
+	CBasePlayer* pPlayer = UTIL_PlayerByIndex(params[arg_index]);
+	CHECK_CONNECTED(pPlayer, arg_index);
+
+	pPlayer->TraceAttack(args[arg_attacker], args[arg_damage], args[arg_dir], args[arg_trace], args[arg_dmg_type]);
+	return TRUE;
+}
+
+cell AMX_NATIVE_CALL rg_player_takedamage(AMX* amx, cell* params)
+{
+	enum args_e { arg_count, arg_index, arg_inflictor, arg_attacker, arg_damage, arg_dmg_type };
+
+	CHECK_ISPLAYER(arg_index);
+	CHECK_ISENTITY(arg_inflictor);
+	CHECK_ISENTITY(arg_attacker);
+
+	CBasePlayer* pPlayer = UTIL_PlayerByIndex(params[arg_index]);
+	CHECK_CONNECTED(pPlayer, arg_index);
+
+	return pPlayer->TakeDamage(args[arg_attacker], args[arg_inflictor], args[arg_damage], args[arg_dmg_type]);
+}
+
+cell AMX_NATIVE_CALL rg_player_takehealth(AMX* amx, cell* params)
+{
+	enum args_e { arg_count, arg_index, arg_health, arg_dmg_type };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer* pPlayer = UTIL_PlayerByIndex(params[arg_index]);
+	CHECK_CONNECTED(pPlayer, arg_index);
+
+	return pPlayer->TakeHealth(args[arg_health], args[arg_dmg_type]);
+}
+
+cell AMX_NATIVE_CALL rg_player_killed(AMX* amx, cell* params)
+{
+	enum args_e { arg_count, arg_index, arg_attacker, arg_gib };
+
+	CHECK_ISPLAYER(arg_index);
+	CHECK_ISENTITY(arg_attacker);
+
+	CBasePlayer* pPlayer = UTIL_PlayerByIndex(params[arg_index]);
+	CHECK_CONNECTED(pPlayer, arg_index);
+
+	pPlayer->Killed(args[arg_attacker], args[arg_gib]);
+	return TRUE;
+}
+
+cell AMX_NATIVE_CALL rg_player_addpoints(AMX* amx, cell* params)
+{
+	enum args_e { arg_count, arg_index, arg_score, arg_allow_negative_score };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer* pPlayer = UTIL_PlayerByIndex(params[arg_index]);
+	CHECK_CONNECTED(pPlayer, arg_index);
+
+	pPlayer->AddPoints(args[arg_score], args[arg_allow_negative_score]);
+	return TRUE;
+}
+
+cell AMX_NATIVE_CALL rg_is_player_alive(AMX* amx, cell* params)
+{
+	enum args_e { arg_count, arg_index };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer* pPlayer = UTIL_PlayerByIndex(params[arg_index]);
+	CHECK_CONNECTED(pPlayer, arg_index);
+
+	return pPlayer->IsAlive();
+}
+
+cell AMX_NATIVE_CALL rg_is_player_net_client(AMX* amx, cell* params)
+{
+	enum args_e { arg_count, arg_index };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer* pPlayer = UTIL_PlayerByIndex(params[arg_index]);
+	CHECK_CONNECTED(pPlayer, arg_index);
+
+	return pPlayer->IsNetClient();
+}
+
+cell AMX_NATIVE_CALL rg_get_player_gun_position(AMX* amx, cell* params)
+{
+	enum args_e { arg_count, arg_index, arg_out };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer* pPlayer = UTIL_PlayerByIndex(params[arg_index]);
+	CHECK_CONNECTED(pPlayer, arg_index);
+
+	args[arg_out].vector() = pPlayer->GetGunPosition();
+	return TRUE;
+}
+
+cell AMX_NATIVE_CALL rg_is_player_bot(AMX* amx, cell* params)
+{
+	enum args_e { arg_count, arg_index };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer* pPlayer = UTIL_PlayerByIndex(params[arg_index]);
+	CHECK_CONNECTED(pPlayer, arg_index);
+
+	return pPlayer->IsBot();
+}
+
 AMX_NATIVE_INFO Misc_Natives_RG[] =
 {
 	{ "rg_set_animation",             rg_set_animation             },
@@ -3459,6 +3575,16 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 	{ "rg_player_relationship",       rg_player_relationship       },
 
 	{ "rg_send_death_message",        rg_send_death_message        },
+
+	{ "rg_player_traceattack",        rg_player_traceattack        },
+	{ "rg_player_takedamage",         rg_player_takedamage		   },
+	{ "rg_player_takehealth",         rg_player_takehealth         },
+	{ "rg_player_killed",			  rg_player_killed             },
+	{ "rg_player_addpoints",          rg_player_addpoints          },
+	{ "rg_is_player_alive",           rg_is_player_alive           },
+	{ "rg_is_player_net_client",      rg_is_player_net_client      },
+	{ "rg_get_player_gun_position",   rg_get_player_gun_position   },
+	{ "rg_is_player_bot",             rg_is_player_bot             },
 
 	{ nullptr, nullptr }
 };
