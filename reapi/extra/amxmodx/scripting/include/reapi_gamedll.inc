@@ -1265,7 +1265,7 @@ native rg_player_takehealth(const index, const Float:flHealth, const bitsDamageT
 *
 * @param index              Client index
 * @param attacker           Attacker index
-* @param gibs               Use DMG_NEVERGIB or DMG_ALWAYSGIB
+* @param gib                Use DMG_NEVERGIB or DMG_ALWAYSGIB
 *
 * @noreturn
 */

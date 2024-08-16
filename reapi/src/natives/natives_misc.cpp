@@ -3425,7 +3425,7 @@ cell AMX_NATIVE_CALL rg_player_takehealth(AMX* amx, cell* params)
 *
 * @param index              Client index
 * @param attacker           Attacker index
-* @param gibs               Use DMG_NEVERGIB or DMG_ALWAYSGIB
+* @param gib                Use DMG_NEVERGIB or DMG_ALWAYSGIB
 *
 * @noreturn
 */
@@ -3661,15 +3661,15 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 
 	{ "rg_send_death_message",        rg_send_death_message        },
 
-	{ "rg_player_traceattack",        rg_player_traceattack        },
-	{ "rg_player_takedamage",         rg_player_takedamage		   },
-	{ "rg_player_takehealth",         rg_player_takehealth         },
-	{ "rg_player_killed",			  rg_player_killed             },
-	{ "rg_player_addpoints",          rg_player_addpoints          },
-	{ "rg_is_player_alive",           rg_is_player_alive           },
-	{ "rg_is_player_net_client",      rg_is_player_net_client      },
-	{ "rg_get_player_gun_position",   rg_get_player_gun_position   },
-	{ "rg_is_player_bot",             rg_is_player_bot             },
+	{ "rg_player_traceattack",        rg_player_traceattack },
+	{ "rg_player_takedamage",         rg_player_takedamage },
+	{ "rg_player_takehealth",         rg_player_takehealth },
+	{ "rg_player_killed",             rg_player_killed },
+	{ "rg_player_addpoints",          rg_player_addpoints },
+	{ "rg_is_player_alive",           rg_is_player_alive },
+	{ "rg_is_player_net_client",      rg_is_player_net_client },
+	{ "rg_get_player_gun_position",   rg_get_player_gun_position },
+	{ "rg_is_player_bot",             rg_is_player_bot },
 
 	{ nullptr, nullptr }
 };
