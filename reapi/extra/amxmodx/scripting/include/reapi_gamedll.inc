@@ -1234,7 +1234,7 @@ native rg_send_death_message(const pKiller, const pVictim, const pAssister, cons
 *
 * @noreturn
 */
-native rg_player_traceattack(const index, const attacker, const Float:flDamage, Float:vecDir[3], const ptr, bitsDamageType);
+native rg_player_traceattack(const index, const attacker, const Float:flDamage, Float:vecDir[3], const ptr, const bitsDamageType);
 
 /*
 * -
