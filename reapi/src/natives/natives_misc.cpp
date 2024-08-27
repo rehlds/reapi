@@ -3683,33 +3683,41 @@ cell AMX_NATIVE_CALL rh_get_client_connect_time(AMX *amx, cell *params)
 }
 
 /*
-* Checks if a specific entity is fully packed in a given frame for a host client.
+* Checks if a specific entity is present in the host's outgoing entity table for a given frame,
+* indicating it has passed the visibility check (AddToFullPack) and is ready for client transmission.
 *
-* @param index      Client index for whom we are checking the entity.
+* @param host       Host index for whom we are checking the entity. (Host cannot be a fake client)
 * @param entity     Entity index to find in the table of entities for the given frame.
 * @param frame      Frame index where to look. Default is -1, which checks the previous frame.
 * @note             To check in the current frame, this native should be called at the end of the server frame.
 *
-* @return           Returns true if the entity is fully packed and ready to be sent to all clients in the given frame, otherwise false.
+* @return           Returns true if the entity is present in the host's outgoing entity table and
+*                   ready to be sent to all clients in the given frame, otherwise false.
 *
 * native bool:rh_is_entity_fullpacked(const host, const entity, const frame = -1);
 */
 cell AMX_NATIVE_CALL rh_is_entity_fullpacked(AMX *amx, cell *params)
 {
-	enum args_e { arg_count, arg_index, arg_entity, arg_frame };
+	enum args_e { arg_count, arg_host, arg_entity, arg_frame };
 
 	const int SV_UPDATE_BACKUP = (gpGlobals->maxClients == 1) ? SINGLEPLAYER_BACKUP : MULTIPLAYER_BACKUP;
 	const int SV_UPDATE_MASK   = (SV_UPDATE_BACKUP - 1);
 
-	CHECK_ISPLAYER(arg_index);
+	CHECK_ISPLAYER(arg_host);
 
-	client_t *pClient = clientOfIndex(params[arg_index]);
-	CHECK_CLIENT_CONNECTED(pClient, arg_index);
+	client_t *pHost = clientOfIndex(params[arg_host]);
+	CHECK_CLIENT_CONNECTED(pHost, arg_host);
+
+	if (pHost->fakeclient)
+	{
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: Entity checking for fake client (#%d) is invalid. Fake clients do not process entity updates.", __FUNCTION__, params[arg_host]);
+		return FALSE;
+	}
 
 	int iEntity = params[arg_entity];
 	int iFrame = params[arg_frame];
 
-	client_frame_t *frame = &pClient->frames[(pClient->netchan.outgoing_sequence + iFrame) & SV_UPDATE_MASK];
+	client_frame_t *frame = &pHost->frames[(pHost->netchan.outgoing_sequence + iFrame) & SV_UPDATE_MASK];
 	packet_entities_t *fullpack = &frame->entities;
 
 	for (int i = 0; i < fullpack->num_entities; i++)
