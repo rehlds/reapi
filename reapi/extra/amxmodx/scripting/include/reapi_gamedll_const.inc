@@ -1094,7 +1094,7 @@ enum GamedllFunc_CSGameRules
 
 	/*
 	* Description:      Can this player take damage from this attacker?
-	* Return type:      float
+	* Return type:      BOOL
 	* Params:           (const index, const attacker)
 	*/
 	RG_CSGameRules_FPlayerCanTakeDamage,
