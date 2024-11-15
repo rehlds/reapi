@@ -2,7 +2,7 @@
 
 ---
 
-## [`5.24.0.300`](https://github.com/rehlds/ReAPI/releases/tag/5.24.0.300) - 2022-02-04
+## [`5.24.0.300`](https://github.com/rehlds/ReAPI/releases/tag/5.24.0.300) - 2023-12-12
 
 > [!CAUTION]
 > This version is compatible with [ReGameDLL](https://github.com/rehlds/ReGameDLL_CS/) version [5.26.0.668](https://github.com/rehlds/ReGameDLL_CS/releases/tag/5.26.0.668) and higher!
