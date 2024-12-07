@@ -52,13 +52,9 @@ jobs:
 
   linux:
     name: 'Linux'
-    runs-on: ubuntu-latest
-    container: s1lentq/linux86buildtools:latest
+    runs-on: ubuntu-20.04
     outputs:
       app-version: ${{ steps.app-version.outputs.version }}
-
-    env:
-      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
 
     steps:
       - name: Checkout
@@ -66,9 +62,15 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Build using Intel C++ Compiler 19.0
+      - name: Check dependencies
         run: |
-          rm -rf build && CC=icc CXX=icpc cmake -B build && cmake --build build -j8
+          sudo dpkg --add-architecture i386
+          sudo apt-get update
+          sudo apt-get install -y gcc-multilib g++-multilib
+
+      - name: Build
+        run: |
+          rm -rf build && CC=gcc CXX=g++ cmake -B build && cmake --build build -j8
 
       - name: Reading appversion.h
         id: app-version
